@@ -23,7 +23,7 @@ spec:
       containers:
         - name: api
           # The matching FastAPI image must be pushed before Argo CD syncs this application.
-          image: qp4534/ev-energy-management-fastapi:c776154e70f56a2cb7d215697273c45084b450ed
+          image: qp4534/ev-energy-management-fastapi:8c45e664e2c500e65d81cc88a6a312b20fd4e968
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
@@ -42,13 +42,25 @@ spec:
             # The shared RDS schema uses ANOMALY_LOGS/TWIN_FRAMES, not the old twin_incidents tables.
             - name: TWIN_INFRA_REQUIRED
               value: "false"
+            - name: EMBEDDED_AI_ENABLED
+              value: "true"
+            - name: REPORT_JOBS_ENABLED
+              value: "true"
+            - name: REPORT_WORKER_ENABLED
+              value: "true"
+            - name: DEEPSEEK_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: fastapi-secret
+                  key: DEEPSEEK_API_KEY
+                  optional: true
           resources:
             requests:
-              cpu: 250m
-              memory: 768Mi
-            limits:
               cpu: "1"
-              memory: 1536Mi
+              memory: 2Gi
+            limits:
+              cpu: "2"
+              memory: 4Gi
           readinessProbe:
             httpGet:
               path: /readyz
