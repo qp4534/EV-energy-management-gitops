@@ -34,6 +34,13 @@ spec:
           env:
             - name: JAVA_TOOL_OPTIONS
               value: "-Xmx256m -Xss512k"
+            # value comes from the "db-secret" Secret (created by the backend repo's
+            # deploy workflow), not stored here
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_PASSWORD
           resources:
             requests:
               cpu: 100m
