@@ -34,6 +34,9 @@ spec:
           env:
             - name: JAVA_TOOL_OPTIONS
               value: "-Xmx256m -Xss512k"
+            # Spring maps FASTAPI_BASE_URL to the fastapi.base-url property.
+            - name: FASTAPI_BASE_URL
+              value: "http://ev-ai-inference-api.fastapi.svc.cluster.local"
             # value comes from the "db-secret" Secret (created by the backend repo's
             # deploy workflow), not stored here
             - name: DB_PASSWORD

@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ev-ai-inference-api
+  namespace: fastapi
+  labels:
+    app: ev-ai-inference-api
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: ev-ai-inference-api
+  template:
+    metadata:
+      labels:
+        app: ev-ai-inference-api
+    spec:
+      containers:
+        - name: api
+          # The matching FastAPI image must be pushed before Argo CD syncs this application.
+          image: qp4534/ev-energy-management-fastapi:c776154e70f56a2cb7d215697273c45084b450ed
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: fastapi-secret
+                  key: DATABASE_URL
+            - name: REDIS_URL
+              value: redis://redis:6379/0
+            - name: MODEL_BUNDLE_DIR
+              value: /app/model_bundles/current_stage_v1/ev_battery_safety_inference_v1
+            - name: ANOMALY_PERSISTENCE_ENABLED
+              value: "true"
+            # The shared RDS schema uses ANOMALY_LOGS/TWIN_FRAMES, not the old twin_incidents tables.
+            - name: TWIN_INFRA_REQUIRED
+              value: "false"
+          resources:
+            requests:
+              cpu: 250m
+              memory: 768Mi
+            limits:
+              cpu: "1"
+              memory: 1536Mi
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            failureThreshold: 6
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8000
+            initialDelaySeconds: 20
+            periodSeconds: 10
