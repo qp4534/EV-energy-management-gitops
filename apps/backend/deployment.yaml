@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: qp4534/ev-energy-management-backend:245c869745ee4221931504674c61951d53d8fa82
+          image: qp4534/ev-energy-management-backend:1e5b312c19a21c5fd34f0a15e73c13e19356cd45
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
