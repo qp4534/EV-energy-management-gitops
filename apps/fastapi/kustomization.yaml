@@ -5,3 +5,4 @@ resources:
   - redis.yaml
   - deployment.yaml
   - service.yaml
+  - scenario-replay.yaml

@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ev-scenario-replay
+  namespace: fastapi
+  labels:
+    app: ev-scenario-replay
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ev-scenario-replay
+  template:
+    metadata:
+      labels:
+        app: ev-scenario-replay
+    spec:
+      containers:
+        - name: replay
+          image: qp4534/ev-energy-management-fastapi:03d21a7033f55373daa2e37d71d357b2971e4877
+          imagePullPolicy: IfNotPresent
+          command: ["python", "-m", "app.scenario_replay"]
+          args:
+            - --s3-bucket
+            - ev-platform-thermal-data
+            - --s3-prefix
+            - digital-twin/scenarios
+            - --speed
+            - "1"
+          env:
+            - name: REDIS_URL
+              value: redis://redis:6379/0
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: fastapi-secret
+                  key: DATABASE_URL
+            - name: SCENARIO_S3_BUCKET
+              value: ev-platform-thermal-data
+            - name: SCENARIO_S3_PREFIX
+              value: digital-twin/scenarios
+            # S3 access: prefer IRSA (serviceAccountName + IAM role).
+            # Until IRSA is configured, add AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY
+            # from a secret so the worker can read the scenario datasets.
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
