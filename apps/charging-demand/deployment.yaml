@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: qp4534/ev-charging-demand:latest
+          image: qp4534/ev-charging-demand:ffd60e06fbfbfc9b93ce26abcd05c6ee9599ba63
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8001
