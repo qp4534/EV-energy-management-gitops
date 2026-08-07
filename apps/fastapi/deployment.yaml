@@ -10,8 +10,8 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxUnavailable: 0
-      maxSurge: 1
+      maxUnavailable: 1
+      maxSurge: 0
   selector:
     matchLabels:
       app: ev-ai-inference-api
@@ -23,7 +23,7 @@ spec:
       containers:
         - name: api
           # The matching FastAPI image must be pushed before Argo CD syncs this application.
-          image: qp4534/ev-energy-management-fastapi:87f32b367dd26656e32cdfd0de821d37d029138f
+          image: qp4534/ev-energy-management-fastapi:43d6077eccdf4813ca7c9a6ee6157b99ce70cfd2
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
