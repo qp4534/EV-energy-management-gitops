@@ -4,10 +4,11 @@ metadata:
   name: ev-ai-inference-api
   namespace: fastapi
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: ev-ai-inference-api
   ports:
     - port: 80
       targetPort: 8000
+      nodePort: 30080
       protocol: TCP
