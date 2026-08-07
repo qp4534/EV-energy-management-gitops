@@ -40,8 +40,19 @@ spec:
               value: ev-platform-thermal-data
             - name: SCENARIO_S3_PREFIX
               value: digital-twin/scenarios
-            # S3 access comes from the EKS Pod Identity association
-            # (aws eks create-pod-identity-association), not static keys.
+            # S3 access: static AWS credentials from the aws-credentials secret.
+            # (EKS Pod Identity is set up but the agent DaemonSet is not
+            # installing on this cluster yet; revisit after it is fixed.)
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aws-credentials
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws-credentials
+                  key: AWS_SECRET_ACCESS_KEY
           resources:
             requests:
               cpu: 100m
