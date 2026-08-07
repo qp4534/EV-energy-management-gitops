@@ -40,9 +40,8 @@ spec:
               value: ev-platform-thermal-data
             - name: SCENARIO_S3_PREFIX
               value: digital-twin/scenarios
-            # S3 access: prefer IRSA (serviceAccountName + IAM role).
-            # Until IRSA is configured, add AWS_ACCESS_KEY_ID / AWS_SECRET_ACCESS_KEY
-            # from a secret so the worker can read the scenario datasets.
+            # S3 access comes from the EKS Pod Identity association
+            # (aws eks create-pod-identity-association), not static keys.
           resources:
             requests:
               cpu: 100m
