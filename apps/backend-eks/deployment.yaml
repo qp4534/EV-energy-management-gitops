@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: backend
+  labels:
+    app: backend
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: qp4534/ev-energy-management-backend:4ced9af5fed2c32a1228919e93070ac2f474d603
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          lifecycle:
+            preStop:
+              exec:
+                command: ["sh", "-c", "sleep 5"]
+          env:
+            # Spring removes hyphens when mapping fastapi.base-url from env vars.
+            - name: FASTAPI_BASEURL
+              value: "http://ev-ai-inference-api.fastapi.svc.cluster.local"
+            # ElastiCache (ev-mgmt-redis-001) endpoint - not sensitive, just a hostname
+            - name: REDIS_HOST
+              value: "ev-mgmt-redis-001.ujouan.0001.apn2.cache.amazonaws.com"
+            - name: REDIS_PORT
+              value: "6379"
+            # value comes from the "db-secret" Secret, not stored here
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DB_PASSWORD
+            # values come from the "mail-secret" Secret, not stored here
+            - name: MAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mail-secret
+                  key: MAIL_USERNAME
+            - name: MAIL_APP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mail-secret
+                  key: MAIL_APP_PASSWORD
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              memory: 512Mi
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            failureThreshold: 6
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10

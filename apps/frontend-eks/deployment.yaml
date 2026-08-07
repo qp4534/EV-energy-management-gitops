@@ -22,14 +22,13 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: qp4534/ev-energy-management-frontend-web:d35d9c3a1b51b04c8c941ce3e2c6cfcb5354dfb7
+          image: qp4534/ev-energy-management-frontend-web:51b951ffddc04f57588c6b274883ddd6c519f7c4
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
           lifecycle:
             preStop:
               exec:
-                # give the ingress a moment to stop routing here before the process dies
                 command: ["sh", "-c", "sleep 5"]
           resources:
             requests:

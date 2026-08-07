@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: frontend
+  name: fastapi
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/qp4534/EV-energy-management-gitops.git
     targetRevision: main
-    path: apps/frontend
+    path: apps/fastapi
   destination:
     server: https://kubernetes.default.svc
-    namespace: frontend
+    namespace: fastapi
   syncPolicy:
     automated:
       prune: true

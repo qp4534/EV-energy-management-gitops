@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: backend
+  name: frontend-eks
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/qp4534/EV-energy-management-gitops.git
     targetRevision: main
-    path: apps/backend
+    path: apps/frontend-eks
   destination:
     server: https://kubernetes.default.svc
-    namespace: backend
+    namespace: frontend
   syncPolicy:
     automated:
       prune: true
