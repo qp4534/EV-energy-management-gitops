@@ -15,6 +15,7 @@ spec:
       labels:
         app: ev-scenario-replay
     spec:
+      serviceAccountName: ev-scenario-replay
       containers:
         - name: replay
           image: qp4534/ev-energy-management-fastapi:03d21a7033f55373daa2e37d71d357b2971e4877
