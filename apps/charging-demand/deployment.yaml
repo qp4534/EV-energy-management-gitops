@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: charging-demand
+  namespace: fastapi
+  labels:
+    app: charging-demand
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 0
+  selector:
+    matchLabels:
+      app: charging-demand
+  template:
+    metadata:
+      labels:
+        app: charging-demand
+    spec:
+      containers:
+        - name: api
+          image: qp4534/ev-charging-demand:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8001
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8001
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 6
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8001
+            initialDelaySeconds: 15
+            periodSeconds: 10
