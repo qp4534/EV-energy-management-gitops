@@ -31,7 +31,8 @@ spec:
               exec:
                 command: ["sh", "-c", "sleep 5"]
           env:
-            - name: FASTAPI_BASE_URL
+            # Spring removes hyphens when mapping fastapi.base-url from env vars.
+            - name: FASTAPI_BASEURL
               value: "http://ev-ai-inference-api.fastapi.svc.cluster.local"
             # value comes from the "db-secret" Secret, not stored here
             - name: DB_PASSWORD
