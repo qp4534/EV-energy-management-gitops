@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ev-ai-inference-api
+  namespace: fastapi
+  annotations:
+    nginx.ingress.kubernetes.io/websocket-services: ev-ai-inference-api
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          # More specific than backend's /api prefix, so /api/v1/twins
+          # (REST + WebSocket) goes to FastAPI instead of Spring.
+          - path: /api/v1/twins
+            pathType: Prefix
+            backend:
+              service:
+                name: ev-ai-inference-api
+                port:
+                  number: 80
