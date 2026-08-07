@@ -44,6 +44,17 @@ spec:
                 secretKeyRef:
                   name: db-secret
                   key: DB_PASSWORD
+            # values come from the "mail-secret" Secret, not stored here
+            - name: MAIL_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mail-secret
+                  key: MAIL_USERNAME
+            - name: MAIL_APP_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mail-secret
+                  key: MAIL_APP_PASSWORD
           resources:
             requests:
               cpu: 100m
