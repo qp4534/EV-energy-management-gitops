@@ -37,6 +37,13 @@ spec:
             # Spring removes hyphens when mapping fastapi.base-url from env vars.
             - name: FASTAPI_BASEURL
               value: "http://ev-ai-inference-api.fastapi.svc.cluster.local"
+            # ElastiCache (ev-mgmt-redis-001) endpoint - not sensitive, just a hostname.
+            # NOTE: k3s EC2's private IP needs to be allowed in the redis security group
+            # too, same as it is for RDS, or this will fail to connect from here.
+            - name: REDIS_HOST
+              value: "ev-mgmt-redis-001.ujouan.0001.apn2.cache.amazonaws.com"
+            - name: REDIS_PORT
+              value: "6379"
             # value comes from the "db-secret" Secret (created by the backend repo's
             # deploy workflow), not stored here
             - name: DB_PASSWORD

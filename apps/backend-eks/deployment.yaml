@@ -34,6 +34,11 @@ spec:
             # Spring removes hyphens when mapping fastapi.base-url from env vars.
             - name: FASTAPI_BASEURL
               value: "http://ev-ai-inference-api.fastapi.svc.cluster.local"
+            # ElastiCache (ev-mgmt-redis-001) endpoint - not sensitive, just a hostname
+            - name: REDIS_HOST
+              value: "ev-mgmt-redis-001.ujouan.0001.apn2.cache.amazonaws.com"
+            - name: REDIS_PORT
+              value: "6379"
             # value comes from the "db-secret" Secret, not stored here
             - name: DB_PASSWORD
               valueFrom:
