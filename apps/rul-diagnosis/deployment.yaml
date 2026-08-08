@@ -37,6 +37,21 @@ spec:
                   name: rul-diagnosis-secret
                   key: ANTHROPIC_API_KEY
                   optional: true
+            # 매입처 실시간 검색(buyer_lookup.py) - Serper(검색)+DeepSeek(요약) 조합.
+            # 둘 다 없으면 fetch_buyer_disclosure/discover_buyers가 자동으로 None을
+            # 반환하고, 화면/PDF는 기존 정적 매입처 목록(valuation.BUYERS)으로 폴백한다.
+            - name: SERPER_API_KEY_NH
+              valueFrom:
+                secretKeyRef:
+                  name: rul-diagnosis-secret
+                  key: SERPER_API_KEY_NH
+                  optional: true
+            - name: DEEPSEEK_API_KEY_NH
+              valueFrom:
+                secretKeyRef:
+                  name: rul-diagnosis-secret
+                  key: DEEPSEEK_API_KEY_NH
+                  optional: true
           resources:
             requests:
               cpu: 250m
