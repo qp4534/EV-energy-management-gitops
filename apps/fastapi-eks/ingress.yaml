@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ev-ai-inference-api
+  namespace: fastapi
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    # Shares the existing ev-mgmt ALB with backend/frontend.
+    # order 5 is evaluated before backend(/api, order 10), so
+    # /api/v1/twins is routed to FastAPI instead of Spring.
+    alb.ingress.kubernetes.io/group.name: ev-mgmt
+    alb.ingress.kubernetes.io/group.order: "5"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:242254325514:certificate/ca26e3ca-03f6-4026-aa66-94adb6e1aa16
+spec:
+  rules:
+    - host: mijungev.kro.kr
+      http:
+        paths:
+          - path: /api/v1/twins
+            pathType: Prefix
+            backend:
+              service:
+                name: ev-ai-inference-api
+                port:
+                  number: 80

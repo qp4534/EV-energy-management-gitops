@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ev-scenario-replay
+  namespace: fastapi
+  labels:
+    app: ev-scenario-replay
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ev-scenario-replay
+  template:
+    metadata:
+      labels:
+        app: ev-scenario-replay
+    spec:
+      containers:
+        - name: replay
+          image: qp4534/ev-energy-management-fastapi:09374326f7ea6bb2dfee1b6e810ef3adf96ca136
+          imagePullPolicy: IfNotPresent
+          command: ["python", "-m", "app.scenario_replay"]
+          args:
+            - --s3-bucket
+            - ev-platform-thermal-data
+            - --s3-prefix
+            - digital-twin/scenarios
+            - --speed
+            - "1"
+          env:
+            - name: REDIS_URL
+              value: redis://ev-mgmt-redis-001.ujouan.0001.apn2.cache.amazonaws.com:6379/0
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: fastapi-secret
+                  key: DATABASE_URL
+            - name: SCENARIO_S3_BUCKET
+              value: ev-platform-thermal-data
+            - name: SCENARIO_S3_PREFIX
+              value: digital-twin/scenarios
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aws-credentials
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws-credentials
+                  key: AWS_SECRET_ACCESS_KEY
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
