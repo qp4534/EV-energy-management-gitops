@@ -23,7 +23,7 @@ spec:
       containers:
         - name: api
           # The matching FastAPI image must be pushed before Argo CD syncs this application.
-          image: qp4534/ev-energy-management-fastapi:ffd60e06fbfbfc9b93ce26abcd05c6ee9599ba63
+          image: qp4534/ev-energy-management-fastapi:10065d26535e8b62e255522ce518995a4e7cd60a
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
