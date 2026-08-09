@@ -9,7 +9,7 @@ metadata:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internal
     alb.ingress.kubernetes.io/target-type: ip
-    alb.ingress.kubernetes.io/subnets: subnet-09c06d27005e1da3b,subnet-0d7f675eb22fa0c31
+    alb.ingress.kubernetes.io/subnets: subnet-09c06d27005e1da3b,subnet-0d7f675eb22fa0c31,subnet-035ce67247529bd15,subnet-08fee09984522e5bf
     alb.ingress.kubernetes.io/group.name: ev-mgmt-internal
     alb.ingress.kubernetes.io/group.order: "5"
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
