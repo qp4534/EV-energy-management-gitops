@@ -16,6 +16,7 @@ metadata:
     alb.ingress.kubernetes.io/ssl-redirect: "443"
     alb.ingress.kubernetes.io/security-groups: sg-021f75fa82918eca5
     alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:242254325514:certificate/51d6c343-35bd-42f3-b1f3-75d3ddaa7809
+    alb.ingress.kubernetes.io/healthcheck-path: /readyz
 spec:
   rules:
     - host: admin.mijungev.kro.kr
