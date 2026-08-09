@@ -10,6 +10,9 @@ metadata:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internal
     alb.ingress.kubernetes.io/target-type: ip
+    # VPC에 private 서브넷이 없어(전부 public) 자동탐지가 안 되므로 직접 지정한다 -
+    # internal 스킴이라 이 서브넷에 있어도 ALB 자체는 퍼블릭 IP를 받지 않는다.
+    alb.ingress.kubernetes.io/subnets: subnet-09c06d27005e1da3b,subnet-0d7f675eb22fa0c31
     alb.ingress.kubernetes.io/group.name: ev-mgmt-internal
     alb.ingress.kubernetes.io/group.order: "20"
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
