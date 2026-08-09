@@ -1,0 +1,29 @@
+# admin.mijungev.kro.kr(내부 전용) 경로의 /api/v1/twins - order 5로 backend-internal(/api, order 10)보다
+# 먼저 평가되게 해서 트윈 요청은 FastAPI로 간다 (외부 그룹의 group.order 구성과 동일한 이유).
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: fastapi-internal
+  namespace: fastapi
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/group.name: ev-mgmt-internal
+    alb.ingress.kubernetes.io/group.order: "5"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/security-groups: sg-021f75fa82918eca5
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:242254325514:certificate/51d6c343-35bd-42f3-b1f3-75d3ddaa7809
+spec:
+  rules:
+    - host: admin.mijungev.kro.kr
+      http:
+        paths:
+          - path: /api/v1/twins
+            pathType: Prefix
+            backend:
+              service:
+                name: ev-ai-inference-api
+                port:
+                  number: 80

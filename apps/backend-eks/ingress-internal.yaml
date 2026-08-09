@@ -1,0 +1,28 @@
+# admin.mijungev.kro.kr(내부 전용) 경로의 /api - frontend-internal과 같은 ALB 그룹을 공유한다.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: backend-internal
+  namespace: backend
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internal
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/group.name: ev-mgmt-internal
+    alb.ingress.kubernetes.io/group.order: "10"
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
+    alb.ingress.kubernetes.io/security-groups: sg-021f75fa82918eca5
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:242254325514:certificate/51d6c343-35bd-42f3-b1f3-75d3ddaa7809
+spec:
+  rules:
+    - host: admin.mijungev.kro.kr
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: backend
+                port:
+                  number: 80
