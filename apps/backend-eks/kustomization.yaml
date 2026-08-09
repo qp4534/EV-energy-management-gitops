@@ -6,5 +6,3 @@ resources:
   - service.yaml
   - ingress.yaml
   - ingress-internal.yaml
-  - servicemonitor.yaml
-  - hpa-custom-metric.yaml
