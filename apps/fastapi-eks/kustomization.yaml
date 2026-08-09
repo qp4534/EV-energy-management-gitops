@@ -6,3 +6,4 @@ resources:
   - service.yaml
   - ingress.yaml
   - scenario-replay.yaml
+  - keda-thermal-runaway.yaml

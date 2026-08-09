@@ -12,10 +12,28 @@ metadata:
     alb.ingress.kubernetes.io/group.order: "20"
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
     alb.ingress.kubernetes.io/ssl-redirect: "443"
-    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:242254325514:certificate/ca26e3ca-03f6-4026-aa66-94adb6e1aa16
+    # apex cert (mijungev.kro.kr) as default + wildcard cert (*.mijungev.kro.kr) added
+    # for SNI so www./other subdomains get a matching cert too
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-2:242254325514:certificate/ca26e3ca-03f6-4026-aa66-94adb6e1aa16,arn:aws:acm:ap-northeast-2:242254325514:certificate/51d6c343-35bd-42f3-b1f3-75d3ddaa7809
+    # 사용자 앱(외부 ALB)에 WAF 연결 - 공통 취약점/알려진 악성 입력/SQLi/평판 나쁜 IP 차단 +
+    # IP당 5분 2000요청 레이트리밋 (ev-mgmt-external-waf WebACL)
+    alb.ingress.kubernetes.io/wafv2-acl-arn: arn:aws:wafv2:ap-northeast-2:242254325514:regional/webacl/ev-mgmt-external-waf/9bba8771-8582-43fa-b660-a82d4bf72f2c
+    # www가 정식 주소이므로, 루트 도메인(apex)으로 들어오면 www로 301 리다이렉트한다.
+    alb.ingress.kubernetes.io/actions.redirect-to-www: >
+      {"Type":"redirect","RedirectConfig":{"Host":"www.mijungev.kro.kr","Path":"/#{path}","Port":"443","Protocol":"HTTPS","Query":"#{query}","StatusCode":"HTTP_301"}}
 spec:
   rules:
     - host: mijungev.kro.kr
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: redirect-to-www
+                port:
+                  name: use-annotation
+    - host: www.mijungev.kro.kr
       http:
         paths:
           - path: /

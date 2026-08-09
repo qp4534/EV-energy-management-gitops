@@ -1,0 +1,23 @@
+# backend를 Prometheus custom metric(초당 HTTP 요청 수, http_requests_per_second -
+# prometheus-adapter가 Micrometer의 http_server_requests_seconds_count를 변환해
+# custom.metrics.k8s.io에 노출)으로 오토스케일링한다.
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: backend-http-rps
+  namespace: backend
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: backend
+  minReplicas: 2
+  maxReplicas: 6
+  metrics:
+    - type: Pods
+      pods:
+        metric:
+          name: http_requests_per_second
+        target:
+          type: AverageValue
+          averageValue: "20"
