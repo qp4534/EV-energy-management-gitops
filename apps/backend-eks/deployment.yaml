@@ -31,8 +31,8 @@ spec:
               exec:
                 command: ["sh", "-c", "sleep 5"]
           env:
-            # Spring removes hyphens when mapping fastapi.base-url from env vars.
-            - name: FASTAPI_BASEURL
+            # Used by both fastapi.base-url and the AI chatbot URL fallback.
+            - name: FASTAPI_BASE_URL
               value: "http://ev-ai-inference-api.fastapi.svc.cluster.local"
             # rul-diagnosis 서비스(배터리 매도 제안서 PDF/매입처 실시간 검색) 호출용.
             # 이게 없으면 application.properties 기본값(localhost:8000)으로 떨어져서
