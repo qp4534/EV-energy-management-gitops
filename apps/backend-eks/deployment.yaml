@@ -39,6 +39,10 @@ spec:
             # 백엔드 파드 자기 자신을 호출하게 되므로(rul-diagnosis가 아님) 항상 실패한다.
             - name: RUL_DIAGNOSIS_BASE_URL
               value: "http://rul-diagnosis.fastapi.svc.cluster.local"
+            # charging-demand 서비스(지도 화면 "지금 시간대 충전 수요" 배지) 호출용. 위와
+            # 같은 이유로 없으면 기본값(localhost:8001)으로 떨어져서 항상 실패한다.
+            - name: CHARGING_DEMAND_BASE_URL
+              value: "http://charging-demand.fastapi.svc.cluster.local"
             # ElastiCache (ev-mgmt-redis-001) endpoint - not sensitive, just a hostname
             - name: REDIS_HOST
               value: "ev-mgmt-redis-001.ujouan.0001.apn2.cache.amazonaws.com"
