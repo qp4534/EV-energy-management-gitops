@@ -24,7 +24,7 @@ spec:
         - name: api
           # 모델 파일(304MB+125MB)이 이미지 안에 이미 구워져 있음 - S3에서 CI 빌드 시점에
           # 받아서 COPY. .github/workflows/deploy-rul-diagnosis.yml 참고.
-          image: qp4534/ev-rul-diagnosis:ee17eb4a6e593903d19f77b219b73fae4041077b
+          image: qp4534/ev-rul-diagnosis:c6ebb611d0a32ecb6e8d0f741e14bf76876d1b40
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
