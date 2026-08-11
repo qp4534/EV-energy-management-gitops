@@ -8,13 +8,13 @@
 `.github/workflows/deploy-rul-diagnosis.yml`이 S3(`ev-mgmt-ai-models` 버킷)에서 받아
 빌드 시점에 이미지 안에 구워 넣습니다. 이 매니페스트는 그 이미지를 그대로 씁니다.
 
-`ANTHROPIC_API_KEY`는 선택 사항입니다(`/pipeline`에서 `include_report=true`로 Claude 종합
-리포트를 받을 때만 필요 — `/report/pdf`, `/diagnose/erd`는 키 없이 동작). 쓰려면 Argo CD
-동기화 전에 아래 Secret을 만들어 두세요.
+`DEEPSEEK_API_KEY_NH`는 선택 사항입니다(`/pipeline`에서 `include_report=true`로 DeepSeek
+종합 리포트를 받을 때만 필요 — `/report/pdf`, `/diagnose/erd`, `include_report=false`인
+`/pipeline`은 키 없이 동작). 쓰려면 Argo CD 동기화 전에 아래 Secret을 만들어 두세요.
 
 ```bash
 kubectl create namespace fastapi --dry-run=client -o yaml | kubectl apply -f -
 kubectl create secret generic rul-diagnosis-secret -n fastapi \
-  --from-literal=ANTHROPIC_API_KEY='실제 키' \
+  --from-literal=DEEPSEEK_API_KEY_NH='실제 키' \
   --dry-run=client -o yaml | kubectl apply -f -
 ```
