@@ -42,8 +42,3 @@ apps/
   Amazon Managed Prometheus(AMP)로 `remote_write`
 - 클러스터 애드온(KEDA, kube-prometheus-stack, prometheus-adapter, aws-load-balancer-controller,
   ArgoCD)은 이 저장소가 아니라 Helm으로 직접 설치·관리한다 — 여기 있는 건 앱 워크로드 매니페스트뿐.
-
-## 브랜치 규칙
-
-작업은 `dev_nh`(개인 브랜치)에서 커밋(한글 메시지) → 확인 후 `main`에 병합 → ArgoCD가 `main`만 감시하므로
-실제 배포는 병합 후에 일어난다.
