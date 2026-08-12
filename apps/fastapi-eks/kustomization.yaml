@@ -7,4 +7,3 @@ resources:
   - ingress.yaml
   - ingress-internal.yaml
   - scenario-replay.yaml
-  - keda-thermal-runaway.yaml

@@ -1,6 +1,6 @@
-# 배터리 진단(rul-diagnosis) 워크로드를 SQS 큐 길이 기준으로 오토스케일링한다.
-# TriggerAuthentication은 같은 네임스페이스(fastapi)의 fastapi-eks 쪽에서 이미
-# keda-sqs-reader-auth로 정의되어 있어 여기서는 재사용만 한다.
+# rul-diagnosis is called synchronously over HTTP by Spring Boot.
+# Scale it from the workload's real CPU utilization instead of an SQS queue
+# that has no producer/consumer in the application request path.
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
@@ -14,10 +14,7 @@ spec:
   cooldownPeriod: 120
   pollingInterval: 15
   triggers:
-    - type: aws-sqs-queue
-      authenticationRef:
-        name: keda-sqs-reader-auth
+    - type: cpu
       metadata:
-        queueURL: https://sqs.ap-northeast-2.amazonaws.com/242254325514/ev-mgmt-battery-diagnosis-queue
-        queueLength: "5"
-        awsRegion: ap-northeast-2
+        type: Utilization
+        value: "60"
