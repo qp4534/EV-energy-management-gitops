@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: qp4534/ev-energy-management-frontend-web:2dfe72c8bce525f3913edf3385307a14822bd65a
+          image: qp4534/ev-energy-management-frontend-web:3b91b7b3f3fdab7328e21948a7b831b517ed5375
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
