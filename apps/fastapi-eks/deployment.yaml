@@ -42,20 +42,6 @@ spec:
               value: "false"
             - name: TWIN_REDIS_REQUIRED
               value: "true"
-            - name: TWIN_AUTH_REQUIRED
-              value: "true"
-            - name: TWIN_SERVICE_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: twin-auth-secret
-                  key: TWIN_SERVICE_TOKEN
-            - name: TWIN_TICKET_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: twin-auth-secret
-                  key: TWIN_TICKET_SECRET
-            - name: CORS_ORIGINS
-              value: "https://mijungev.kro.kr,https://www.mijungev.kro.kr"
             - name: EMBEDDED_AI_ENABLED
               value: "true"
             - name: REPORT_JOBS_ENABLED
