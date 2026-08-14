@@ -62,6 +62,14 @@ spec:
                 secretKeyRef:
                   name: mail-secret
                   key: MAIL_APP_PASSWORD
+            # value comes from the "jwt-secret" Secret, not stored here.
+            # jwt.secret has no fallback default anymore (see backend "jwt 보안 강화" commit),
+            # so this env var is required for the pod to start at all.
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_SECRET
           resources:
             requests:
               cpu: 100m
