@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: replay
-          image: qp4534/ev-energy-management-fastapi:1c4276f64049baabd5a295cb21e29505d8967aa9
+          image: qp4534/ev-energy-management-fastapi:d5b1cefd63bb7dfcf00e9e0b3b260ba136fc4898
           imagePullPolicy: IfNotPresent
           command: ["python", "-m", "app.scenario_replay"]
           args:
