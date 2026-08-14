@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: qp4534/ev-energy-management-fastapi:ff56999f71f5f7d4971a52597e2ae807a2222bff
+          image: qp4534/ev-energy-management-fastapi:057051afed591f592c8e28c68d0f24bf708952b0
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
